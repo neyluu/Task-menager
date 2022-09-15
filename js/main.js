@@ -2,8 +2,14 @@
 
 const addTaskButton = document.querySelector("#add-task");
 const tasksContainer = document.querySelector("#tasks");
+const startTaskID = 0;
 
-let taskID = 0;
+if(window.localStorage.getItem("ID") == null) 
+{
+    window.localStorage.setItem("ID", JSON.stringify(startTaskID));
+}
+
+let taskID = JSON.parse(window.localStorage.getItem("ID"));
 
 addTaskButton.addEventListener("click", addTask);
 
@@ -27,7 +33,11 @@ function addTask()
         }
     
         let taskTmp = new task(taskID, taskTitle);
-        taskTmp.deadline = deadlineDate;
+        if(deadlineDate == "")
+        {
+            taskTmp.deadline = "No deadline";
+        }
+        else taskTmp.deadline = deadlineDate;
         
         let taskTmpName = "task" + taskID;  
         let taskTemplate =`<div class="task task-1 flex-standard" data-taskID="${taskID}"> <input type="checkbox" name="done" id="done"> <label for="done">DONE</label> <h4>${taskTitle}</h4> <p></p> <button>EDIT</button> <button>DELETE</button> </div>`;
@@ -37,11 +47,14 @@ function addTask()
         
         tasksContainer.innerHTML += taskTemplate;
         taskID++;
+        window.localStorage.setItem("ID", JSON.stringify(taskID));
     }
     else window.alert("You must enter title");
    
  
-
+    //writeTasks()
+    //funkcja ktora będzie pokazywac taski po wczytaniu ich z local storage
+    //ID DO LOCAL STORAGE
 
     // zapisac do obiektu json wszystki potrzebne dane > zrobic html element wklejąc zmienne do templatu > zrobic go na stronie
 }
