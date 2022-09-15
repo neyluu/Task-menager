@@ -1,0 +1,83 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+body {
+    background: #222;
+    color: #ddd;
+}
+
+:root {
+
+}
+
+#header {
+    text-align: center;
+    font-family: 'Righteous', cursive;
+    padding: 1em;
+    font-size: 1.5rem;
+}
+
+main {
+
+}
+
+.tasks-container {
+    width: 20vw;
+    height: 80vh; /* tmp */
+    background-color: rgba(255, 0, 0, 0.329);
+    margin-right: 1rem;
+}
+
+.add-task-box {
+    height: 5rem;
+    width: 100%;
+    background-color: pink;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black; /* tmp*/
+}
+
+#add-task {
+    width: 60%;
+    margin: 0 auto;
+}
+#add-task > img {
+    height: 60%;
+    padding: 0 1rem;
+}
+#add-task > h3 {
+    font-size: 1.5rem;
+}
+
+.task {
+    margin: 5px;
+    padding: 5px;
+    justify-content: space-around !important;
+    font-size: 110%;
+    border: 1px solid black;
+}
+
+
+
+.task-content {
+    width: 60vw;
+    height: 80vh; /* tmp */
+    background-color: rgba(255, 166, 0, 0.219);
+}
+
+
+
+
+
+/* utility classes */
+.flex-standard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

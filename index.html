@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Menager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header id="header"><h1>Task Menager</h1></header>
+    <main class="flex-standard">
+        <section class="tasks-container">
+            <div class="add-task-box">
+                <div class="add-task-inputs  flex-standard">
+                    <input type="text" name="add-task-title" id="add-task-title" placeholder="Task title" required>
+                    <label for="add-task-deadline">Task dedline:</label>
+                    <!-- limit date to future dates -->
+                    <input type="date" name="add-task-deadline" id="add-task-deadline">
+                </div>
+
+                <button id="add-task" class="flex-standard" type="submit">
+                    <img src="svg/plus_icon.svg" alt="plus icon">
+                    <h3>Add task</h3>
+                </button>
+            </div>
+            
+
+            <section id="tasks">
+                <div class="task task-1 flex-standard">
+                    <input type="checkbox" name="done" id="done">
+                    <label for="done">DONE</label>
+
+                    <h4>task title</h4>
+
+                    <p>x days left</p>
+
+                    <button>EDIT</button>
+                    <button>DELETE</button>
+                </div>
+            </section>
+        </section>
+        <section class="task-content">
+    
+        </section>
+    </main>
+</body>
+</html>
