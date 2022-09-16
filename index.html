@@ -41,14 +41,20 @@
 
                     <p>x days left</p>
 
-                    <button>EDIT</button>
+                    <button class="edit-task-btn">EDIT</button>
                     <button>DELETE</button>
                 </div>
             </section>
         </section>
         <section class="task-content">
-    
+            <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" readonly></textarea>
+            <button type="submit" id="save-task">SAVE</button>
+            <button class="edit-task-btn">EDIT</button> 
+
+            
         </section>
     </main>
+    <button id="dev-btn">SHOW LOCALSTORAGE</button>
+    <button id="dev-clear-storage">CLEAR STORAGE</button>
 </body>
 </html>

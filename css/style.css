@@ -45,14 +45,15 @@ main {
 
 #add-task {
     width: 60%;
+    height: 2rem;
     margin: 0 auto;
 }
 #add-task > img {
-    height: 60%;
+    height: 40%;
     padding: 0 1rem;
 }
 #add-task > h3 {
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 /* tmp */
@@ -72,9 +73,20 @@ main {
     background-color: rgba(255, 166, 0, 0.219);
 }
 
+#task-edit-field {
+    width: 100%;
+    height: 50%;
+}
 
 
+textarea {
+    padding: .3rem;
+    font-size: 1.3rem;
+}
 
+.selected {
+    border: 1px solid rgb(255, 208, 0);
+}
 
 /* utility classes */
 .flex-standard {
