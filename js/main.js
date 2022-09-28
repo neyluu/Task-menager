@@ -6,6 +6,9 @@ const taskTitleField = document.querySelector("#task-title");
 const startTaskID = 0;
 const createTasks = [];
 
+const todayMessage = "To today!";
+const endOfTimeMessage = "End of time!";
+
 if(window.localStorage.getItem("ID") == null) 
 {
     window.localStorage.setItem("ID", JSON.stringify(startTaskID));
@@ -31,43 +34,63 @@ function showTasksList()
     //generate task list from tasks from localStorage and show it on the left panel
     tasksContainer.innerHTML = "";
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
-    console.log("3", tasks, tasks.length)
-
+    
     tasks.forEach(task => {
-        let taskTemplate =`<div class="task task-${task.ID} flex-standard" data-taskID="${task.ID}"> <input type="checkbox" name="done" id="done-${task.ID}"> <label for="done-${task.ID}">DONE</label> <h4>${task.taskTitle}</h4> <p></p> <button class="edit-task-btn">EDIT</button> <button class="delete-task-button">DELETE</button> </div>`;
+        // let taskTemplate =`<div class="task task-${task.ID} flex-standard" data-taskID="${task.ID}"> <div class="task-checkbox"> <input type="checkbox" name="done" id="done-${task.ID}"> <label for="done-${task.ID}">DONE</label></div> <h4>${task.taskTitle}</h4> <p class="deadline-field">${calculateDeadline(task.deadline)}</p> <div class="task-buttons"><button class="edit-task-btn"><img src="svg/edit_icon.svg"></button> <button class="delete-task-button"><img src="svg/delete_icon.svg"></button></div> </div>`;
+        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> <div class="top"><h4>${task.taskTitle}</h4></div><div class="bottom flex-standard"><div class="task-checkbox"> <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> <label for="done-${task.ID}" class="done-label">DONE</label></div><p class="deadline-field">${calculateDeadline(task.deadline)}</p><div class="task-buttons"><button class="edit-task-btn"><img src="svg/edit_icon.svg"></button><button class="delete-task-button"><img src="svg/delete_icon.svg"></button></div> </div></div>`;
         tasksContainer.innerHTML += taskTemplate;
     });
     
     tasksElements = document.querySelectorAll(".task");
-    //generate and show task content with title on top from tasks from localStorage
+    let deadlines = document.querySelectorAll(".deadline-field");
     
+    tasks.forEach((task, index) => {
+        console.log(task.isDone)
+        if(task.isDone)
+        {
+            tasksElements[index].classList.add("task-done");
+        }
+    });
+
+    deadlines.forEach(element => {
+        let value = element.outerText;
+        if(value === todayMessage)
+        {
+            element.classList.add("deadline-warning");
+        }
+        else if(value === endOfTimeMessage)
+        {
+            element.classList.add("deadline-end");
+        }
+    });
+
+    console.log(deadlines)
+    // deadlines.forEach("")
+
+
+    //generate and show task content with title on top from tasks from localStorage
     tasksElements.forEach((task, currentID) => {
         currentTaskID = currentID;
-        console.log("4", currentID)
 
         task.setAttribute("data-current-id", currentID);
-        console.log("5", task)
+
 
 
         editField.value = "";
         taskTitleField.textContent = "";
         task.addEventListener("click", () => {
-            console.log("6", task)
-
             currentTaskID = parseInt(task.getAttribute("data-current-id"));
-            console.log("8", currentID)
-            console.log("9", tasks)
+
             tasksElements.forEach(el => {
                 el.classList.remove("selected");
             });
             task.classList.add("selected");
-            console.log(deleted)
+
             if(tasks.length != 0)
             {
                 if(tasks.length == currentID)
                 {
                     currentTaskID -= 1;
-                    console.log("10")
                 }
                 editField.value = tasks[currentTaskID].taskContent;
                 taskTitleField.textContent = tasks[currentTaskID].taskTitle;
@@ -140,6 +163,9 @@ function addEventToGeneratedButtons()
 {
     let editTaskButtons = document.querySelectorAll(".edit-task-btn");
     let deleteTaskButtons = document.querySelectorAll(".delete-task-button");
+    let doneLabels = document.querySelectorAll(".done-label");
+    let doneCheckboxes = document.querySelectorAll(".done-checkbox");
+
 
     editTaskButtons.forEach(button => {
         button.addEventListener("click", editTask);
@@ -150,6 +176,17 @@ function addEventToGeneratedButtons()
             deleteTask(index);
         });
     });
+
+    doneLabels.forEach((el, index) => {
+        el.addEventListener("click", () => {
+            doneChecked(index);
+        });
+    });
+    doneCheckboxes.forEach((el, index) => {
+        el.addEventListener("click", () => {
+            doneChecked(index);
+        });
+    });
 }
 
 function deleteTask(index)
@@ -157,13 +194,73 @@ function deleteTask(index)
     //usunąc task z tasks
     //dodac nowe tasks do local storage
     //showTasksList
-    console.log("1", tasks, tasks.length)
     tasks.splice(index, 1);
-    console.log("2", tasks, tasks.length)
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
     showTasksList();
     addEventToGeneratedButtons();
 }
+
+function doneChecked(index)
+{
+    if(tasks[index].isDone)
+    {
+        console.log("to false")
+        tasks[index].isDone = false;
+    }
+    if(tasks[index].isDone == false)
+    {
+        console.log("to true")
+        tasks[index].isDone = true;
+    }
+    
+    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    console.log(tasks[index])
+    console.log(tasks)
+    showTasksList();
+    // addEventToGeneratedButtons();
+}
+
+function calculateDeadline(deadlineDate)
+{
+    if(deadlineDate === "No deadline")
+    {
+        return "No deadline";
+    }
+    else
+    {
+        let date_1 = new Date(deadlineDate);
+        let date_2 = new Date();
+    
+        let difference = date_1.getTime() - date_2.getTime();
+        let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+       
+        if(totalDays == 0)
+        {
+            return todayMessage;
+        }
+        else if(totalDays < 0)
+        {
+            return endOfTimeMessage;
+        }
+        else 
+        {
+            return totalDays + " days left";
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

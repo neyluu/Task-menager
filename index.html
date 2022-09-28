@@ -12,25 +12,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header"><h1>Task Menager</h1></header>
     <main class="flex-standard">
         <section class="tasks-container">
+            
             <div class="add-task-box">
                 <div class="add-task-inputs  flex-standard">
                     <input type="text" name="add-task-title" id="add-task-title" placeholder="Task title" required>
-                    <label for="add-task-deadline">Task dedline:</label>
-                    <input type="date" name="add-task-deadline" id="add-task-deadline">
+                    <div>
+                        <label for="add-task-deadline" class="add-task-deadline-label">Task dedline:</label>
+                        <input type="date" name="add-task-deadline" id="add-task-deadline">
+                    </div>
                 </div>
 
                 <button id="add-task" class="flex-standard" type="submit">
                     <img src="svg/plus_icon.svg" alt="plus icon">
-                    <h3>Add task</h3>
+                    <h4>Add task</h4>
                 </button>
             </div>
             
-
             <section id="tasks">
                 <!-- temporary template -->
                 <div class="task task-1 flex-standard">
@@ -46,6 +52,7 @@
                 </div>
             </section>
         </section>
+        
         <section class="task-content">
             <h3 id="task-title"></h3>
             <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" readonly></textarea>

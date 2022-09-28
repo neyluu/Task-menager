@@ -4,7 +4,7 @@
 *moving task up and down
 *if deadline = null, print no deadline
 *title at right editable
-
+*chosing main color
 
 TODO
 *add titles
