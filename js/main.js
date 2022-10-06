@@ -150,13 +150,14 @@ function saveTask()
     currentContent.taskContent = contentToSave;
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    editField.setAttribute("readonly", true);
+    editField.setAttribute("disabled", true);
     window.alert("Saved");
 }
 
 function editTask()
 {
-    editField.removeAttribute("readonly")
+    editField.removeAttribute("disabled")
+    editField.focus();
 }
 
 function addEventToGeneratedButtons()

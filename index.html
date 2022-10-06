@@ -55,11 +55,11 @@
         
         <section class="task-content">
             <h3 id="task-title"></h3>
-            <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" readonly></textarea>
-            <button type="submit" id="save-task">SAVE</button>
-            <button class="edit-task-btn">EDIT</button> 
-
-            
+            <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" disabled></textarea>
+            <div class="content-buttons">
+                <button type="submit" id="save-task" class="task-content-button">SAVE</button>
+                <button class="edit-task-btn task-content-button">EDIT</button> 
+            </div>
         </section>
     </main>
     <button id="dev-btn">SHOW LOCALSTORAGE</button>

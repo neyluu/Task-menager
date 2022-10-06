@@ -34,19 +34,16 @@ body {
     font-size: 1.5rem;
 }
 
-main {
-
-}
-
 .tasks-container {
     width: 25vw;
     height: 80vh; /* tmp */
     margin-right: 1rem;
+    /* overflow: hidden; */
 }
 
 .add-task-box {
     /* font-family: 'Barlow', sans-serif; */
-    /* height: 5rem; */
+    height: 7rem;
     width: 100%;
     background-color: var(--dark-gray-700);
     border-radius: 1rem;
@@ -118,14 +115,14 @@ main {
 #add-task:hover,
 #add-task:focus {
     background-color: var(--accent-600);
+    transition: background-color 150ms;
     cursor: pointer;
 }
-
 
 #tasks {
     overflow-y: scroll;
     width: 100%;
-    height: 85%;
+    height: calc(100% - 7rem - 1.5rem);
 }
 #tasks::-webkit-scrollbar {
     display: none;
@@ -198,21 +195,64 @@ main {
 .task-content {
     width: 50vw;
     height: 80vh; /* tmp */
-    background-color: rgba(255, 166, 0, 0.219);
+    background-color: var(--dark-gray-700);
+    border-radius: 1rem;
+    border: 2px solid var(--gray-600);
+    padding: .8em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#task-title {
+    --height: 2rem;
+    height: var(--height);
+    line-height: var(--height);
+    width: 100%;
+    font-size: 2rem;
 }
 
 #task-edit-field {
     width: 100%;
-    height: 50%;
-}
-
-
-textarea {
-    padding: .3rem;
+    height: 80%;
+    padding: .5rem;
     font-size: 1.3rem;
+    background-color: var(--dark-gray-500);
+    border: none;
+    border-radius: 1rem;
+    color: var(--font-white-200);
+    resize: none;
 }
 
+#task-edit-field:focus {
+    outline: none;
+    border: 2px solid var(--accent-400);
+}
 
+.content-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.task-content-button {
+    width: 7rem;
+    height: 2.2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 1rem;
+    border: 1px solid var(--gray-200);
+    background-color: var(--accent-400);
+    color: var(--font-white-200);
+
+}
+
+.task-content-button:hover,
+.task-content-button:focus {
+    background-color: var(--accent-600);
+    transition: background-color 150ms;
+    cursor: pointer;
+}
 
 .delete-task-button {
     z-index: 2;
