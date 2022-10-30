@@ -54,7 +54,11 @@
         </section>
         
         <section class="task-content">
-            <h3 id="task-title"></h3>
+            <!-- <h3 id="task-title"></h3> -->
+            <div class="task-content-top flex-standard">
+                <input type="text" name="" id="task-title" disabled>
+                <button class="edit-title-btn svg-button"><img src="svg/edit1_icon.svg" class="edit-title-img"></button>
+            </div>
             <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" disabled></textarea>
             <div class="content-buttons">
                 <button type="submit" id="save-task" class="task-content-button">SAVE</button>
@@ -65,4 +69,3 @@
     <button id="dev-btn">SHOW LOCALSTORAGE</button>
     <button id="dev-clear-storage">CLEAR STORAGE</button>
 </body>
-</html>

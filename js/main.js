@@ -3,6 +3,7 @@ const tasksContainer = document.querySelector("#tasks");
 const saveTaskButton = document.querySelector("#save-task");
 const editField = document.querySelector("#task-edit-field");
 const taskTitleField = document.querySelector("#task-title");
+const editTitleButton = document.querySelector(".edit-title-btn");
 const startTaskID = 0;
 const createTasks = [];
 
@@ -37,7 +38,7 @@ function showTasksList()
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
     
     tasks.forEach(task => {
-        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> <div class="top"><h4>${task.taskTitle}</h4></div><div class="bottom flex-standard"><div class="task-checkbox"> <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> <label for="done-${task.ID}" class="done-label">DONE</label></div><p class="deadline-field">${calculateDeadline(task.deadline)}</p><div class="task-buttons"><button class="edit-task-btn"><img src="svg/edit_icon.svg"></button><button class="delete-task-button"><img src="svg/delete_icon.svg"></button></div> </div></div>`;
+        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> <div class="top"><h4>${task.taskTitle}</h4></div><div class="bottom flex-standard"><div class="task-checkbox"> <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> <label for="done-${task.ID}" class="done-label">DONE</label></div><p class="deadline-field">${calculateDeadline(task.deadline)}</p><div class="task-buttons"><button class="edit-task-btn svg-button"><img src="svg/edit2_icon.svg"></button><button class="delete-task-button svg-button"><img src="svg/delete_icon.svg"></button></div> </div></div>`;
         
         tasksContainer.innerHTML += taskTemplate;
     });
@@ -57,6 +58,7 @@ function showTasksList()
     //change deadline color by left time
     deadlines.forEach(element => {
         let value = element.outerText;
+        
         if(value === todayMessage)
         {
             element.classList.add("deadline-warning");
@@ -73,11 +75,11 @@ function showTasksList()
         task.setAttribute("data-current-id", currentID);
 
         editField.value = "";
-        taskTitleField.textContent = "";
+        taskTitleField.value = "";
 
         task.addEventListener("click", () => {
             currentTaskID = parseInt(task.getAttribute("data-current-id"));
-
+            console.log("test")
             //outline on selected task
             tasksElements.forEach(el => {
                 el.classList.remove("selected");
@@ -93,7 +95,7 @@ function showTasksList()
                 }
                 //write content and title
                 editField.value = tasks[currentTaskID].taskContent;
-                taskTitleField.textContent = tasks[currentTaskID].taskTitle;
+                taskTitleField.value = tasks[currentTaskID].taskTitle;
             }
             else
             {
@@ -159,18 +161,49 @@ function saveTask()
     window.alert("Saved");
 }
 
+function saveTitle()
+{
+    let newTitle = taskTitleField.value;
+
+    tasks[currentTaskID].taskTitle = newTitle;
+    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    taskTitleField.setAttribute("disabled", true);
+    window.alert("save");
+
+    let editTitleImg = document.querySelector(".edit-title-img");
+    editTitleImg.setAttribute("src", "svg/edit1_icon.svg");
+
+    editTitleButton.addEventListener("click", editTitle);
+
+    showTasksList();
+    addEventToGeneratedButtons();
+}
+
 function editTask()
 {
-    editField.removeAttribute("disabled")
+    editField.removeAttribute("disabled");
     editField.focus();
+}
+
+function editTitle()
+{
+    taskTitleField.removeAttribute("disabled");
+    taskTitleField.focus();
+
+    let editTitleImg = document.querySelector(".edit-title-img");
+    editTitleImg.setAttribute("src", "svg/checkmark_icon.svg")
+    
+    editTitleButton.addEventListener("click", saveTitle);
+    //podmienic svg na ptaszka, ktory wywoła save()
 }
 
 function addEventToGeneratedButtons()
 {
     let editTaskButtons = document.querySelectorAll(".edit-task-btn");
     let deleteTaskButtons = document.querySelectorAll(".delete-task-button");
-    let doneLabels = document.querySelectorAll(".done-label");
-    let doneCheckboxes = document.querySelectorAll(".done-checkbox");
+    // let doneLabels = document.querySelectorAll(".done-label");
+    // let doneCheckboxes = document.querySelectorAll(".done-checkbox");
 
     editTaskButtons.forEach(button => {
         button.addEventListener("click", editTask);
@@ -181,6 +214,8 @@ function addEventToGeneratedButtons()
             deleteTask(index);
         });
     });
+
+    editTitleButton.addEventListener("click", editTitle);
 
     //beta DONE checked
     // doneLabels.forEach((el, index) => {
@@ -202,7 +237,7 @@ function deleteTask(index)
     //showTasksList
     tasks.splice(index, 1);
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
-   
+
     showTasksList();
     addEventToGeneratedButtons();
 }
