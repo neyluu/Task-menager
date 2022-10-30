@@ -1,10 +1,16 @@
 + *task deadline
 + *if deadline = null, print no deadline
++ *fix plus icon
++ *title at right editable
+
 *text editor in task
 *moving task up and down
-*title at right editable
 *chosing main color
-*fix plus icon
+
+*if task isnt saved but usert want change task -> alert "do you want save" > save() > showTasks()
+
+TO FIX
+- buttons in task content cause errors when no task selected
 
 TODO
 *add titles

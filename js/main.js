@@ -24,6 +24,7 @@ let taskID = JSON.parse(window.localStorage.getItem("ID"));
 let tasks = JSON.parse(window.localStorage.getItem("tasks"));
 let currentTaskID;
 let tasksElements;
+let isTaskSelected = false;
 
 addTaskButton.addEventListener("click", addTask);
 saveTaskButton.addEventListener("click", saveTask); 
@@ -31,7 +32,7 @@ saveTaskButton.addEventListener("click", saveTask);
 showTasksList();
 addEventToGeneratedButtons();
 
-function showTasksList()
+function showTasksList(forcedID)
 {
     //generate task list from tasks from localStorage and show it on the left panel
     tasksContainer.innerHTML = "";
@@ -78,30 +79,59 @@ function showTasksList()
         taskTitleField.value = "";
 
         task.addEventListener("click", () => {
-            currentTaskID = parseInt(task.getAttribute("data-current-id"));
-            console.log("test")
-            //outline on selected task
-            tasksElements.forEach(el => {
-                el.classList.remove("selected");
-            });
-            task.classList.add("selected");
-
-            if(tasks.length != 0)
-            {
-                //to work deleteTask() properly
-                if(tasks.length == currentID)
-                {
-                    currentTaskID -= 1;
-                }
-                //write content and title
-                editField.value = tasks[currentTaskID].taskContent;
-                taskTitleField.value = tasks[currentTaskID].taskTitle;
-            }
-            else
-            {
-                editField.value = "";
-            }
+            isTaskSelected = true;
+            console.log("clicked")
+            generateContent();
         });
+
+        generateContent();
+
+        function generateContent()
+        {
+            if(isTaskSelected)
+            {
+                if(forcedID != undefined) 
+                {
+                    currentTaskID = forcedID;
+                    console.log("forced1")
+                }
+                else 
+                {
+                    currentTaskID = parseInt(task.getAttribute("data-current-id"));
+                }
+                
+                //outline on selected task
+                tasksElements.forEach(el => {
+                    el.classList.remove("selected");
+                });
+                if(forcedID != undefined)
+                {
+                    tasksElements[currentTaskID].classList.add("selected");
+                    console.log("forced2")
+                    forcedID = null;
+                }
+                else
+                {
+                    task.classList.add("selected");
+                }
+    
+                if(tasks.length != 0)
+                {
+                    //to work deleteTask() properly
+                    if(tasks.length == currentID)
+                    {
+                        currentTaskID -= 1;
+                    }
+                    //write content and title
+                    editField.value = tasks[currentTaskID].taskContent;
+                    taskTitleField.value = tasks[currentTaskID].taskTitle;
+                }
+                else
+                {
+                    editField.value = "";
+                }
+            }
+        }
     });
 }
 
@@ -158,7 +188,7 @@ function saveTask()
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
     editField.setAttribute("disabled", true);
-    window.alert("Saved");
+    // window.alert("Saved");
 }
 
 function saveTitle()
@@ -180,8 +210,15 @@ function saveTitle()
     addEventToGeneratedButtons();
 }
 
-function editTask()
+function editTask(e, index)
 {
+    e.stopPropagation();
+    isTaskSelected = true;
+    currentTaskID = index;
+
+    showTasksList(currentTaskID);
+    addEventToGeneratedButtons();
+
     editField.removeAttribute("disabled");
     editField.focus();
 }
@@ -205,13 +242,20 @@ function addEventToGeneratedButtons()
     // let doneLabels = document.querySelectorAll(".done-label");
     // let doneCheckboxes = document.querySelectorAll(".done-checkbox");
 
-    editTaskButtons.forEach(button => {
-        button.addEventListener("click", editTask);
-    });
+    // editTaskButtons.forEach(button => {
+    //     button.addEventListener("click", editTask);
+    // });
+
+    //test
+    editTaskButtons.forEach((button, index) => {
+        button.addEventListener("click", (e) => { 
+            editTask(e, index);
+        })
+    })
 
     deleteTaskButtons.forEach((button, index) => {
-        button.addEventListener("click", () => {
-            deleteTask(index);
+        button.addEventListener("click", (e) => {
+            deleteTask(e, index);
         });
     });
 
@@ -230,13 +274,14 @@ function addEventToGeneratedButtons()
     //});
 }
 
-function deleteTask(index)
+function deleteTask(e, index)
 {
-    //usunąc task z tasks
-    //dodac nowe tasks do local storage
-    //showTasksList
+    e.stopPropagation();
+    
     tasks.splice(index, 1);
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
+    
+    isTaskSelected = false; 
 
     showTasksList();
     addEventToGeneratedButtons();
@@ -293,9 +338,94 @@ function calculateDeadline(deadlineDate)
     }
 }
 
+function createAlert(type)
+{
+    //possible types
+    //"info_content_saved"  = info alert with information that content was saved
+    //"info_title saved"    = info alert with information that title was saved
+    //"confirm_save   "     = confirm alert asked you want save task
+    //"confirm_delete"      = confirm alert asked you want delete task
+    
+    let confirmYesButton, confirmNoButton, infoOkButton;
+    let message, mode;
 
+    switch (type) {
+        case "info_content_saved":
+            contentWasSavedInfo();
+            break;
+        case "info_title_saved":
+            titleWasSavedInfo();
+            break;
+        case "confirm_save":
+            confirmSave();
+            break;
+        case "confirm_delete":
+            confirmDelete();
+            break;
+        default:
+            break;
+    }
+    
 
+    function contentWasSavedInfo()
+    {
+        message = "Task content was saved succesfully!";
+        mode = "info";
 
+        showAlert(message, mode);
+
+        infoOkButton.addEventListener("click", closeAlert);
+    }
+    function titleWasSavedInfo()
+    {
+
+    }
+    function confirmSave()
+    {
+
+    }
+    function confirmDelete()
+    {
+
+    }
+
+    function showAlert(message, mode)
+    {
+        //modes = confirm, info
+        const alert = document.querySelector(".alert");
+        const alertMessage = document.querySelector(".alert-message");
+        const infoButtons = document.querySelector(".info-btns");
+        const confirmButtons = document.querySelector(".confirm-btns");
+        const contentToBlur = document.querySelector("#whole-content");
+        //alert.display flex
+        //btns-visible dla odpowiedniego alertu
+        //złapać buttony
+
+        if(mode == "confirm")
+        {
+            infoButtons.classList.remove("btns-visible");
+            confirmButtons.classList.add("btns-visible");
+
+            confirmYesButton = document.querySelector(".alert-yes-btn");
+            confirmNoButton = document.querySelector(".alert-no-btn");
+        }
+        if(mode == "info")
+        {
+            confirmButtons.classList.remove("btns-visible");
+            infoButtons.classList.add("btns-visible");
+
+            infoOkButton = document.querySelector(".alert-ok-btn");
+        }
+        
+        alert.style.display = "flex";
+        alertMessage.textContent = message;
+        contentToBlur.classList.add("blur")
+    }
+    function closeAlert()
+    {
+        console.log("closed")
+    }
+}
 
 
 

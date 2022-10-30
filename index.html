@@ -18,54 +18,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header id="header"><h1>Task Menager</h1></header>
-    <main class="flex-standard">
-        <section class="tasks-container">
-            
-            <div class="add-task-box">
-                <div class="add-task-inputs  flex-standard">
-                    <input type="text" name="add-task-title" id="add-task-title" placeholder="Task title" required>
-                    <div>
-                        <label for="add-task-deadline" class="add-task-deadline-label">Task dedline:</label>
-                        <input type="date" name="add-task-deadline" id="add-task-deadline">
+    <div class="alert">
+        <p class="alert-message"></p>
+        <div class="btns-visible info-btns flex-standard">
+            <button type="submit" class="alert-btn alert-ok-btn">OK</button>
+        </div>
+        <div class="confirm-btns flex-standard">
+            <button type="submit" class="alert-btn alert-yes-btn">YES</button>
+            <button type="submit" class="alert-btn alert-no-btn">NO</button>
+        </div>
+    </div>
+
+    <span id="whole-content">
+        <header id="header"><h1>Task Menager</h1></header>
+        <main class="flex-standard">
+            <section class="tasks-container">
+                
+                <div class="add-task-box">
+                    <div class="add-task-inputs  flex-standard">
+                        <input type="text" name="add-task-title" id="add-task-title" placeholder="Task title" required>
+                        <div>
+                            <label for="add-task-deadline" class="add-task-deadline-label">Task dedline:</label>
+                            <input type="date" name="add-task-deadline" id="add-task-deadline">
+                        </div>
                     </div>
+
+                    <button id="add-task" class="flex-standard" type="submit">
+                        <img src="svg/plus_icon.svg" alt="plus icon">
+                        <h4>Add task</h4>
+                    </button>
                 </div>
+                
+                <section id="tasks">
+                    <!-- temporary template -->
+                    <div class="task task-1 flex-standard">
+                        <input type="checkbox" name="done" id="done">
+                        <label for="done">DONE</label>
 
-                <button id="add-task" class="flex-standard" type="submit">
-                    <img src="svg/plus_icon.svg" alt="plus icon">
-                    <h4>Add task</h4>
-                </button>
-            </div>
+                        <h4>task title</h4>
+
+                        <p>x days left</p>
+
+                        <button class="edit-task-btn">EDIT</button>
+                        <button>DELETE</button>
+                    </div>
+                </section>
+            </section>
             
-            <section id="tasks">
-                <!-- temporary template -->
-                <div class="task task-1 flex-standard">
-                    <input type="checkbox" name="done" id="done">
-                    <label for="done">DONE</label>
-
-                    <h4>task title</h4>
-
-                    <p>x days left</p>
-
-                    <button class="edit-task-btn">EDIT</button>
-                    <button>DELETE</button>
+            <section class="task-content">
+                <!-- <h3 id="task-title"></h3> -->
+                <div class="task-content-top flex-standard">
+                    <input type="text" name="" id="task-title" disabled>
+                    <button class="edit-title-btn svg-button"><img src="svg/edit1_icon.svg" class="edit-title-img"></button>
+                </div>
+                <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" disabled></textarea>
+                <div class="content-buttons">
+                    <button type="submit" id="save-task" class="task-content-button">SAVE</button>
+                    <button class="edit-task-btn task-content-button">EDIT</button> 
                 </div>
             </section>
-        </section>
-        
-        <section class="task-content">
-            <!-- <h3 id="task-title"></h3> -->
-            <div class="task-content-top flex-standard">
-                <input type="text" name="" id="task-title" disabled>
-                <button class="edit-title-btn svg-button"><img src="svg/edit1_icon.svg" class="edit-title-img"></button>
-            </div>
-            <textarea name="task-edit-field" id="task-edit-field" cols="30" rows="10" disabled></textarea>
-            <div class="content-buttons">
-                <button type="submit" id="save-task" class="task-content-button">SAVE</button>
-                <button class="edit-task-btn task-content-button">EDIT</button> 
-            </div>
-        </section>
-    </main>
-    <button id="dev-btn">SHOW LOCALSTORAGE</button>
-    <button id="dev-clear-storage">CLEAR STORAGE</button>
+        </main>
+    </span>
+    
+<button id="dev-btn">SHOW LOCALSTORAGE</button>
+<button id="dev-clear-storage">CLEAR STORAGE</button>
+    
+    
 </body>
