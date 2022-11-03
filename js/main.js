@@ -6,6 +6,7 @@ const saveTaskButton = document.querySelector("#save-task");
 const editField = document.querySelector("#task-edit-field");
 const taskTitleField = document.querySelector("#task-title");
 const editTitleButton = document.querySelector(".edit-title-btn");
+const editTitleImg = document.querySelector(".edit-title-img");
 const startTaskID = 0;
 const createTasks = [];
 
@@ -24,9 +25,11 @@ if(window.localStorage.getItem("tasks") == null)
 
 let taskID = JSON.parse(window.localStorage.getItem("ID"));
 let tasks = JSON.parse(window.localStorage.getItem("tasks"));
-let currentTaskID;
+let selectedTaskID;
 let tasksElements;
 let isTaskSelected = false;
+let isTaskEdited = false;
+let isTitleEdited = false;
 
 addTaskButton.addEventListener("click", addTask);
 saveTaskButton.addEventListener("click", saveTask); 
@@ -34,14 +37,14 @@ saveTaskButton.addEventListener("click", saveTask);
 showTasksList();
 addEventToGeneratedButtons();
 
-function showTasksList(forcedID)
+function showTasksList()
 {
     //generate task list from tasks from localStorage and show it on the left panel
     tasksContainer.innerHTML = "";
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
     
-    tasks.forEach(task => {
-        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> 
+    tasks.forEach((task, index) => {
+        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${index}"> 
                                 <div class="top">
                                     <h4>${task.taskTitle}</h4>
                                 </div>
@@ -67,15 +70,6 @@ function showTasksList(forcedID)
     
     tasksElements = document.querySelectorAll(".task");
     let deadlines = document.querySelectorAll(".deadline-field");
-    
-    //beta DONE checkbox
-    // tasks.forEach((task, index) => {
-    //     console.log(task.isDone)
-    //     if(task.isDone)
-    //     {
-    //         tasksElements[index].classList.add("task-done");
-    //     }
-    // });
 
     //change deadline color by left time
     deadlines.forEach(element => {
@@ -91,69 +85,56 @@ function showTasksList(forcedID)
         }
     });
 
-    //generate and show task content with title on top from tasks from localStorage
-    tasksElements.forEach((task, currentID) => {
-        currentTaskID = currentID;
-        task.setAttribute("data-current-id", currentID);
-
-        editField.value = "";
-        taskTitleField.value = "";
-
+    tasksElements.forEach((task, index) => {
         task.addEventListener("click", () => {
-            isTaskSelected = true;
-            console.log("clicked")
-            generateContent();
+            selectTask(index);
         });
-
-        generateContent();
-
-        function generateContent()
-        {
-            if(isTaskSelected)
-            {
-                if(forcedID != undefined) 
-                {
-                    currentTaskID = forcedID;
-                    console.log("forced1")
-                }
-                else 
-                {
-                    currentTaskID = parseInt(task.getAttribute("data-current-id"));
-                }
-                
-                //outline on selected task
-                tasksElements.forEach(el => {
-                    el.classList.remove("selected");
-                });
-                if(forcedID != undefined)
-                {
-                    tasksElements[currentTaskID].classList.add("selected");
-                    console.log("forced2")
-                    forcedID = null;
-                }
-                else
-                {
-                    task.classList.add("selected");
-                }
-    
-                if(tasks.length != 0)
-                {
-                    //to work deleteTask() properly
-                    if(tasks.length == currentID)
-                    {
-                        currentTaskID -= 1;
-                    }
-                    //write content and title
-                    editField.value = tasks[currentTaskID].taskContent;
-                    taskTitleField.value = tasks[currentTaskID].taskTitle;
-                }
-                else
-                {
-                    editField.value = "";
-                }
-            }
-        }
     });
+}
+
+async function selectTask(index)
+{
+    if(isTaskEdited)
+    {
+       let save = await createAlert("confirm_save");
+       if(save)
+       {
+        saveTask();
+       }
+       else
+       {
+        editField.setAttribute("disabled", true);
+        isTaskEdited = false;
+       }
+    }
+
+    if(isTitleEdited) saveTitle();
+
+    isTaskSelected = true;
+    selectedTaskID = index;
+
+    tasksElements.forEach(task => {
+        task.classList.remove("selected");
+    });
+    tasksElements[selectedTaskID].classList.add("selected");
+
+    console.log(`Selected task: ${selectedTaskID}`);
+
+    showTaskContent(selectedTaskID);
+}
+
+function showTaskContent(selectedTaskID)
+{
+    taskTitleField.value = "";
+    editField.value = "";
+
+    tasks = JSON.parse(window.localStorage.getItem("tasks"));
+
+    if(isTaskSelected)
+    {
+        taskTitleField.value = tasks[selectedTaskID].taskTitle;
+        editField.value = tasks[selectedTaskID].taskContent;
+    }
 }
 
 function addTask()
@@ -202,50 +183,52 @@ function addTask()
 
 function saveTask()
 {
+    isTaskEdited = false;
+
     let contentToSave = editField.value;
-    let currentContent = tasks[currentTaskID];
+    let currentContent = tasks[selectedTaskID];
    
     currentContent.taskContent = contentToSave;
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
     editField.setAttribute("disabled", true);
     
-    createAlert("info_task_saved");
+    createAlert("info_content_saved");
 }
 
 function saveTitle()
 {
+    isTitleEdited = false;
+
     let newTitle = taskTitleField.value;
 
-    tasks[currentTaskID].taskTitle = newTitle;
+    tasks[selectedTaskID].taskTitle = newTitle;
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
     taskTitleField.setAttribute("disabled", true);
     
     createAlert("info_title_saved");
 
-    let editTitleImg = document.querySelector(".edit-title-img");
     editTitleImg.setAttribute("src", "svg/edit1_icon.svg");
 
+    editTitleButton.removeEventListener("click", saveTitle);
     editTitleButton.addEventListener("click", editTitle);
-
+    
     showTasksList();
-    addEventToGeneratedButtons();
+    selectTask(selectedTaskID);
+    // addEventToGeneratedButtons();
 }
 
 function editTask(e, index)
 {
     e.stopPropagation();
+
+    selectTask(index);
     
-    isTaskSelected = true;
-    currentTaskID = index;
-    console.log(currentTaskID)
-
-    showTasksList(currentTaskID);
-    addEventToGeneratedButtons();
-
     editField.removeAttribute("disabled");
     editField.focus();
+    
+    isTaskEdited = true;
 }
 
 function editTitle()
@@ -253,9 +236,11 @@ function editTitle()
     taskTitleField.removeAttribute("disabled");
     taskTitleField.focus();
 
-    let editTitleImg = document.querySelector(".edit-title-img");
     editTitleImg.setAttribute("src", "svg/checkmark_icon.svg")
     
+    isTitleEdited = true;
+    
+    editTitleButton.removeEventListener("click", editTitle);
     editTitleButton.addEventListener("click", saveTitle);
 }
 
@@ -263,14 +248,7 @@ function addEventToGeneratedButtons()
 {
     let editTaskButtons = document.querySelectorAll(".edit-task-btn");
     let deleteTaskButtons = document.querySelectorAll(".delete-task-button");
-    // let doneLabels = document.querySelectorAll(".done-label");
-    // let doneCheckboxes = document.querySelectorAll(".done-checkbox");
 
-    // editTaskButtons.forEach(button => {
-    //     button.addEventListener("click", editTask);
-    // });
-
-    //test
     editTaskButtons.forEach((button, index) => {
         button.addEventListener("click", (e) => { 
             console.log(index)
@@ -285,18 +263,6 @@ function addEventToGeneratedButtons()
     });
 
     editTitleButton.addEventListener("click", editTitle);
-
-    //beta DONE checked
-    // doneLabels.forEach((el, index) => {
-    //     el.addEventListener("click", () => {
-    //         doneChecked(index);
-    //     });
-    // });
-    // doneCheckboxes.forEach((el, index) => {
-    //     el.addEventListener("click", () => {
-    //         doneChecked(index);
-    //     });
-    //});
 }
 
 async function deleteTask(e, index)
@@ -309,35 +275,13 @@ async function deleteTask(e, index)
         tasks.splice(index, 1);
         window.localStorage.setItem("tasks", JSON.stringify(tasks));
         
-        isTaskSelected = false; 
-    
+        isTaskSelected = false;
+        
         showTasksList();
         addEventToGeneratedButtons();
     }
     else return
 }
-
-//beta DONE checkbox
-// function doneChecked(index)
-// {
-//     if(tasks[index].isDone)
-//     {
-//         console.log("to false")
-//         tasks[index].isDone = false;
-//     }
-//     if(tasks[index].isDone == false)
-//     {
-//         console.log("to true")
-//         tasks[index].isDone = true;
-//     }
-    
-//     window.localStorage.setItem("tasks", JSON.stringify(tasks));
-
-//     console.log(tasks[index])
-//     console.log(tasks)
-//     showTasksList();
-//     // addEventToGeneratedButtons();
-// }
 
 function calculateDeadline(deadlineDate)
 {

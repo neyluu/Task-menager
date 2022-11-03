@@ -20,8 +20,7 @@ export async function createAlert(type)
             titleWasSavedInfo();
             break;
         case "confirm_save":
-            confirmSave();
-            break;
+            return await confirmSave();
         case "confirm_delete":
             return await confirmDelete();
         default:
