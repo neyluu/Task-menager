@@ -169,7 +169,7 @@ function addTask()
     
     if(taskTitle != "")
     {
-        function task(id, title)
+        function Task(id, title)
         {
             this.ID = id;
             this.taskTitle = title;
@@ -178,7 +178,7 @@ function addTask()
             this.isDone = false;
         }
         //create task object with data from form
-        let taskTmp = new task(taskID, taskTitle);
+        let taskTmp = new Task(taskID, taskTitle);
         
         //set deadline
         if(deadlineDate == "")
@@ -236,6 +236,7 @@ function saveTitle()
 function editTask(e, index)
 {
     e.stopPropagation();
+    
     isTaskSelected = true;
     currentTaskID = index;
     console.log(currentTaskID)
@@ -272,6 +273,7 @@ function addEventToGeneratedButtons()
     //test
     editTaskButtons.forEach((button, index) => {
         button.addEventListener("click", (e) => { 
+            console.log(index)
             editTask(e, index);
         })
     })
