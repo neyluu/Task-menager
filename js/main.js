@@ -211,12 +211,13 @@ function saveTitle()
 
     editTitleImg.setAttribute("src", "svg/edit1_icon.svg");
 
-    editTitleButton.removeEventListener("click", saveTitle);
-    editTitleButton.addEventListener("click", editTitle);
     
     showTasksList();
     selectTask(selectedTaskID);
-    // addEventToGeneratedButtons();
+    addEventToGeneratedButtons();
+    
+    editTitleButton.removeEventListener("click", saveTitle);
+    editTitleButton.addEventListener("click", editTitle);
 }
 
 function editTask(e, index)
