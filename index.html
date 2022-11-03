@@ -7,7 +7,7 @@
     <title>Task Menager</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/dateRestrict.js" defer></script>
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js" defer type="module"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +18,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="alert">
-        <p class="alert-message"></p>
-        <div class="btns-visible info-btns flex-standard">
-            <button type="submit" class="alert-btn alert-ok-btn">OK</button>
-        </div>
-        <div class="confirm-btns flex-standard">
-            <button type="submit" class="alert-btn alert-yes-btn">YES</button>
-            <button type="submit" class="alert-btn alert-no-btn">NO</button>
+    <div class="alert-block-site">
+        <div class="alert">
+            <p class="alert-message"></p>
+            <div class="btns-visible info-btns flex-standard">
+                <button type="submit" class="alert-btn alert-ok-btn">OK</button>
+            </div>
+            <div class="confirm-btns flex-standard">
+                <button type="submit" class="alert-btn alert-yes-btn">YES</button>
+                <button type="submit" class="alert-btn alert-no-btn">NO</button>
+            </div>
         </div>
     </div>
 

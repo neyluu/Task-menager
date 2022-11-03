@@ -1,3 +1,5 @@
+import {createAlert} from "./alerts.js";
+
 const addTaskButton = document.querySelector("#add-task");
 const tasksContainer = document.querySelector("#tasks");
 const saveTaskButton = document.querySelector("#save-task");
@@ -39,7 +41,26 @@ function showTasksList(forcedID)
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
     
     tasks.forEach(task => {
-        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> <div class="top"><h4>${task.taskTitle}</h4></div><div class="bottom flex-standard"><div class="task-checkbox"> <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> <label for="done-${task.ID}" class="done-label">DONE</label></div><p class="deadline-field">${calculateDeadline(task.deadline)}</p><div class="task-buttons"><button class="edit-task-btn svg-button"><img src="svg/edit2_icon.svg"></button><button class="delete-task-button svg-button"><img src="svg/delete_icon.svg"></button></div> </div></div>`;
+        let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${task.ID}"> 
+                                <div class="top">
+                                    <h4>${task.taskTitle}</h4>
+                                </div>
+                                <div class="bottom flex-standard">
+                                    <div class="task-checkbox"> 
+                                        <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> 
+                                        <label for="done-${task.ID}" class="done-label">DONE</label>
+                                    </div>
+                                    <p class="deadline-field">${calculateDeadline(task.deadline)}</p>
+                                    <div class="task-buttons">
+                                        <button class="edit-task-btn svg-button">
+                                            <img src="svg/edit2_icon.svg">
+                                        </button>
+                                        <button class="delete-task-button svg-button">
+                                            <img src="svg/delete_icon.svg">
+                                            </button>
+                                        </div> 
+                                    </div>
+                             </div>`;
         
         tasksContainer.innerHTML += taskTemplate;
     });
@@ -188,7 +209,8 @@ function saveTask()
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
     editField.setAttribute("disabled", true);
-    // window.alert("Saved");
+    
+    createAlert("info_task_saved");
 }
 
 function saveTitle()
@@ -199,7 +221,8 @@ function saveTitle()
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
     taskTitleField.setAttribute("disabled", true);
-    window.alert("save");
+    
+    createAlert("info_title_saved");
 
     let editTitleImg = document.querySelector(".edit-title-img");
     editTitleImg.setAttribute("src", "svg/edit1_icon.svg");
@@ -215,6 +238,7 @@ function editTask(e, index)
     e.stopPropagation();
     isTaskSelected = true;
     currentTaskID = index;
+    console.log(currentTaskID)
 
     showTasksList(currentTaskID);
     addEventToGeneratedButtons();
@@ -232,7 +256,6 @@ function editTitle()
     editTitleImg.setAttribute("src", "svg/checkmark_icon.svg")
     
     editTitleButton.addEventListener("click", saveTitle);
-    //podmienic svg na ptaszka, ktory wywoła save()
 }
 
 function addEventToGeneratedButtons()
@@ -274,17 +297,22 @@ function addEventToGeneratedButtons()
     //});
 }
 
-function deleteTask(e, index)
+async function deleteTask(e, index)
 {
     e.stopPropagation();
-    
-    tasks.splice(index, 1);
-    window.localStorage.setItem("tasks", JSON.stringify(tasks));
-    
-    isTaskSelected = false; 
 
-    showTasksList();
-    addEventToGeneratedButtons();
+    //show alert, if true delete task, if false return
+    if(await createAlert("confirm_delete"))
+    {
+        tasks.splice(index, 1);
+        window.localStorage.setItem("tasks", JSON.stringify(tasks));
+        
+        isTaskSelected = false; 
+    
+        showTasksList();
+        addEventToGeneratedButtons();
+    }
+    else return
 }
 
 //beta DONE checkbox
@@ -337,100 +365,6 @@ function calculateDeadline(deadlineDate)
         }
     }
 }
-
-function createAlert(type)
-{
-    //possible types
-    //"info_content_saved"  = info alert with information that content was saved
-    //"info_title saved"    = info alert with information that title was saved
-    //"confirm_save   "     = confirm alert asked you want save task
-    //"confirm_delete"      = confirm alert asked you want delete task
-    
-    let confirmYesButton, confirmNoButton, infoOkButton;
-    let message, mode;
-
-    switch (type) {
-        case "info_content_saved":
-            contentWasSavedInfo();
-            break;
-        case "info_title_saved":
-            titleWasSavedInfo();
-            break;
-        case "confirm_save":
-            confirmSave();
-            break;
-        case "confirm_delete":
-            confirmDelete();
-            break;
-        default:
-            break;
-    }
-    
-
-    function contentWasSavedInfo()
-    {
-        message = "Task content was saved succesfully!";
-        mode = "info";
-
-        showAlert(message, mode);
-
-        infoOkButton.addEventListener("click", closeAlert);
-    }
-    function titleWasSavedInfo()
-    {
-
-    }
-    function confirmSave()
-    {
-
-    }
-    function confirmDelete()
-    {
-
-    }
-
-    function showAlert(message, mode)
-    {
-        //modes = confirm, info
-        const alert = document.querySelector(".alert");
-        const alertMessage = document.querySelector(".alert-message");
-        const infoButtons = document.querySelector(".info-btns");
-        const confirmButtons = document.querySelector(".confirm-btns");
-        const contentToBlur = document.querySelector("#whole-content");
-        //alert.display flex
-        //btns-visible dla odpowiedniego alertu
-        //złapać buttony
-
-        if(mode == "confirm")
-        {
-            infoButtons.classList.remove("btns-visible");
-            confirmButtons.classList.add("btns-visible");
-
-            confirmYesButton = document.querySelector(".alert-yes-btn");
-            confirmNoButton = document.querySelector(".alert-no-btn");
-        }
-        if(mode == "info")
-        {
-            confirmButtons.classList.remove("btns-visible");
-            infoButtons.classList.add("btns-visible");
-
-            infoOkButton = document.querySelector(".alert-ok-btn");
-        }
-        
-        alert.style.display = "flex";
-        alertMessage.textContent = message;
-        contentToBlur.classList.add("blur")
-    }
-    function closeAlert()
-    {
-        console.log("closed")
-    }
-}
-
-
-
-
-
 
 
 

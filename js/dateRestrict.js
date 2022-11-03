@@ -1,15 +1,21 @@
-const dateInput = document.querySelector("#add-task-deadline");
+dateRestrict();
 
-let date = new Date();
+function dateRestrict()
+{
+    const dateInput = document.querySelector("#add-task-deadline");
 
-let month = date.getMonth() + 1;
-let day = date.getDate();
-let year = date.getFullYear();
+    let date = new Date();
+    
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let year = date.getFullYear();
+    
+    if(month < 10) month = "0" + month;
+    if(day < 10) day = "0" + day;
+    
+    let minDate = year + "-" + month + "-" + day;
+    
+    dateInput.setAttribute("value", minDate);
+    dateInput.setAttribute("min", minDate);
+}
 
-if(month < 10) month = "0" + month;
-if(day < 10) day = "0" + day;
-
-let minDate = year + "-" + month + "-" + day;
-
-dateInput.setAttribute("value", minDate);
-dateInput.setAttribute("min", minDate);
