@@ -2,11 +2,11 @@ import {createAlert} from "./alerts.js";
 
 const addTaskButton = document.querySelector("#add-task");
 const tasksContainer = document.querySelector("#tasks");
-const saveTaskButton = document.querySelector("#save-task");
 const editField = document.querySelector("#task-edit-field");
 const taskTitleField = document.querySelector("#task-title");
 const editTitleButton = document.querySelector(".edit-title-btn");
 const editTitleImg = document.querySelector(".edit-title-img");
+const manageContentButton = document.querySelector(".content-manage-button");
 const startTaskID = 0;
 const createTasks = [];
 
@@ -32,7 +32,7 @@ let isTaskEdited = false;
 let isTitleEdited = false;
 
 addTaskButton.addEventListener("click", addTask);
-saveTaskButton.addEventListener("click", saveTask); 
+manageContentButton.addEventListener("click", manageContent);
 
 showTasksList();
 addEventToGeneratedButtons();
@@ -49,10 +49,9 @@ function showTasksList()
                                     <h4>${task.taskTitle}</h4>
                                 </div>
                                 <div class="bottom flex-standard">
-                                    <div class="task-checkbox"> 
-                                        <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox"> 
-                                        <label for="done-${task.ID}" class="done-label">DONE</label>
-                                    </div>
+                                    <label class="task-checkbox"> 
+                                        <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox">
+                                    </label>
                                     <p class="deadline-field">${calculateDeadline(task.deadline)}</p>
                                     <div class="task-buttons">
                                         <button class="edit-task-btn svg-button">
@@ -64,7 +63,7 @@ function showTasksList()
                                         </div> 
                                     </div>
                              </div>`;
-        
+                            //<label for="done-${task.ID}" class="done-label"></label>
         tasksContainer.innerHTML += taskTemplate;
     });
     
@@ -178,7 +177,7 @@ function addTask()
         showTasksList();
         addEventToGeneratedButtons();
     }
-    else window.alert("You must enter title");
+    else createAlert("info_empty_title");
 }
 
 function saveTask()
@@ -222,7 +221,10 @@ function saveTitle()
 
 function editTask(e, index)
 {
-    e.stopPropagation();
+    if(e != null)
+    {
+        e.stopPropagation();
+    }
 
     selectTask(index);
     
@@ -264,6 +266,29 @@ function addEventToGeneratedButtons()
     });
 
     editTitleButton.addEventListener("click", editTitle);
+}
+
+function manageContent()
+{
+    let mode = this.dataset.mode;
+    // if mode = edit => edit()
+    // if mode = save => save()
+    if(isTaskSelected)
+        if(mode === "edit")
+        {
+            // null in event to prevent bugs
+            editTask(null, selectedTaskID);
+
+            this.textContent = "SAVE";
+            this.setAttribute("data-mode", "save");
+        }
+        if(mode === "save")
+        {
+            saveTask();
+
+            this.textContent = "EDIT";
+            this.setAttribute("data-mode", "edit");
+        }
 }
 
 async function deleteTask(e, index)
@@ -319,14 +344,13 @@ function calculateDeadline(deadlineDate)
 
 
 
-
 // dev buttons
 
-document.querySelector("#dev-btn").addEventListener("click", () => {
-    console.log(JSON.parse(window.localStorage.getItem("tasks")))
-})
+// document.querySelector("#dev-btn").addEventListener("click", () => {
+//     console.log(JSON.parse(window.localStorage.getItem("tasks")))
+// })
 
-document.querySelector("#dev-clear-storage").addEventListener("click", () => {
-    window.localStorage.clear();
-    window.location.reload();
-})
+// document.querySelector("#dev-clear-storage").addEventListener("click", () => {
+//     window.localStorage.clear();
+//     window.location.reload();
+// })

@@ -13,7 +13,15 @@ TO FIX
 - buttons in task content cause errors when no task selected
 
 TODO
-*add titles
++add titles
+
+-custom alert when no title entered
+-task done checkbox work
+-custom scroll bar in textarea
+-restyle alerts
+
+one button to save end edit task, changable
+
 
 ICONS
 https://www.svgrepo.com/collection/web-application-ui/

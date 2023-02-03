@@ -1,8 +1,11 @@
 export async function createAlert(type)
 {
     //possible types
+    // INFO ALERTS
     //"info_content_saved"  = info alert with information that content was saved
     //"info_title_saved"    = info alert with information that title was saved
+    //"info_empty_title"    = info alert with information than is no title entered during creating task
+    // CONFIRM ALERTS
     //"confirm_save   "     = confirm alert asked you want save task
     //"confirm_delete"      = confirm alert asked you want delete task
     
@@ -18,6 +21,9 @@ export async function createAlert(type)
             break;
         case "info_title_saved":
             titleWasSavedInfo();
+            break;
+        case "info_empty_title":
+            emptyTitleFieldInfo();
             break;
         case "confirm_save":
             return await confirmSave();
@@ -43,6 +49,15 @@ export async function createAlert(type)
 
         showAlert(message, mode);
 
+        infoOkButton.addEventListener("click", closeAlert);
+    }
+    function emptyTitleFieldInfo()
+    {
+        message = "You must enter a title to create task!";
+        mode = "info";
+
+        showAlert(message, mode);
+        
         infoOkButton.addEventListener("click", closeAlert);
     }
     function confirmSave()
