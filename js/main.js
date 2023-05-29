@@ -30,7 +30,7 @@ let tasksElements;
 let isTaskSelected = false;
 let isTaskEdited = false;
 let isTitleEdited = false;
-console.log(tasks)
+// console.log(tasks)
 addTaskButton.addEventListener("click", addTask);
 manageContentButton.addEventListener("click", manageContent);
 
@@ -128,7 +128,7 @@ async function selectTask(index)
     });
     tasksElements[selectedTaskID].classList.add("selected");
 
-    console.log(`Selected task: ${selectedTaskID}`);
+    // console.log(`Selected task: ${selectedTaskID}`);
 
     showTaskContent(selectedTaskID);
 }
@@ -265,7 +265,7 @@ function taskDone(e, index, button) {
     }
     
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
-    console.log(button)
+    // console.log(button)
     if(button.checked)
     {
         tasks[index].isDone = true;
@@ -275,8 +275,8 @@ function taskDone(e, index, button) {
         tasks[index].isDone = false;
     }
     
-    console.log(button.checked)
-    console.table(tasks)
+    // console.log(button.checked)
+    // console.table(tasks)
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -288,7 +288,7 @@ function addEventToGeneratedButtons()
 
     editTaskButtons.forEach((button, index) => {
         button.addEventListener("click", (e) => { 
-            console.log(index)
+            // console.log(index)
             editTask(e, index);
         })
     })
