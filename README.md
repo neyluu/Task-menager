@@ -17,6 +17,10 @@ Task Menager is a app to manage your task or duties.
 
 ![tm_rm3](https://github.com/neyluu/Task-menager/assets/75064225/2c986632-5528-4aba-b363-190407f81616)
 
-4. On top this section is task title, which you can edit by clicking icon on right, below is content. You can turn edit mode by clicking button on bottom, this button will change into save button which can you use to save your changes later.
+4. You can select task from list by clicking on it, selected task will highlight by changing border color.
+
+![tm_rm6](https://github.com/neyluu/Task-menager/assets/75064225/4004ecc8-a090-496c-b2a9-29d1fe8be811)
+
+5. On top this section is task title, which you can edit by clicking icon on right, below is content. You can turn edit mode by clicking button on bottom, this button will change into save button which can you use to save your changes later.
 
 ![tm_rm4](https://github.com/neyluu/Task-menager/assets/75064225/4c4628ae-aebd-42c4-9163-151231e023c0)
