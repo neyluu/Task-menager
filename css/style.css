@@ -216,7 +216,6 @@ input.done-checkbox {
     border-radius: 50%;
     border: 2px solid var(--font-white-200);
     
-    /* idk what`s this doin` but works */
     vertical-align: middle;
     appearance: none;
     -webkit-appearance: none;
@@ -347,7 +346,7 @@ input.done-checkbox {
 .content-buttons {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 1rem;
 }
 
@@ -399,76 +398,48 @@ input.done-checkbox {
     z-index: 2;
 }
 
-/* alerts */
-.alert-block-site {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    z-index: 1;
-    display: none;
-}
-
-.alert {
-    width: 25rem;
-    height: 12.5rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    padding: 1em;
-    border-radius: 1.2rem;
-    border: 3px solid var(--accent-400);
-    background-color: var(--gray-600);
-    display: flex; /* flex po uruchomieniu*/ 
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.alert-message {
-    text-align: center;
-    color: var(--font-white-200);
-    font-weight: 600;
-    font-size: 2rem;
-}
-
-.confirm-btns, .info-btns {
-    display: none !important;
-}
-
-.btns-visible {
-    display: flex !important;
-}
-
-.alert-btn {
-    width: 7rem;
-    height: 3rem;
-    font-size: 1.75rem;
-    font-weight: bold;
-    border-radius: 2rem;
-    border: 1px solid var(--gray-200);
-    background-color: var(--accent-400);
-    color: var(--font-white-200);
-}
-
-.alert-btn:hover,
-.alert-btn:focus {
-    background-color: var(--accent-600);
-    transition: background-color 150ms;
-    cursor: pointer;  
-}
-
-.blur {
-    filter: blur(1px);
-    transition: filter .5s;
-}
-
 /* mobile version */
 @media screen and (max-width: 700px)
 {
     body {
-        background-color: rgb(114, 27, 27);
+        /* background-color: rgb(114, 27, 27); */
+        /* padding: 0 1rem; */
+    }
+
+    main {
+        flex-direction: column;
+        max-width: 600px;
+        padding: 0 1.5rem;
+    }
+
+    .tasks-container, .task-content {
+        width: 100%;
+    }
+
+    .tasks-container {
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .task-content {
+    }
+}
+
+@media screen and (max-width: 430px)
+{
+    #task-title {
+        font-size: 1.5rem;
+    }
+}
+@media screen and (max-width: 350px)
+{
+    #header {
+        font-size: 1.2rem;
+    }
+
+    #task-title {
+        font-size: 1.2rem;
     }
 }
 

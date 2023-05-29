@@ -30,7 +30,7 @@ let tasksElements;
 let isTaskSelected = false;
 let isTaskEdited = false;
 let isTitleEdited = false;
-
+console.log(tasks)
 addTaskButton.addEventListener("click", addTask);
 manageContentButton.addEventListener("click", manageContent);
 
@@ -42,7 +42,7 @@ function showTasksList()
     //generate task list from tasks from localStorage and show it on the left panel
     tasksContainer.innerHTML = "";
     tasks = JSON.parse(window.localStorage.getItem("tasks"));
-    
+
     tasks.forEach((task, index) => {
         let taskTemplate = `<div class="task task-${task.ID}" data-taskID="${index}"> 
                                 <div class="top">
@@ -50,7 +50,7 @@ function showTasksList()
                                 </div>
                                 <div class="bottom flex-standard">
                                     <label class="task-checkbox"> 
-                                        <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox">
+                                        <input type="checkbox" name="done" id="done-${task.ID}" class="done-checkbox" data-checked="${task.isDone}">
                                     </label>
                                     <p class="deadline-field">${calculateDeadline(task.deadline)}</p>
                                     <div class="task-buttons">
@@ -66,7 +66,18 @@ function showTasksList()
                             //<label for="done-${task.ID}" class="done-label"></label>
         tasksContainer.innerHTML += taskTemplate;
     });
-    
+
+    let checkboxes = document.querySelectorAll(".done-checkbox")
+
+    checkboxes.forEach(checkbox => {
+        let isChecked = checkbox.getAttribute("data-checked")
+        
+        if(isChecked === 'true')
+        {
+            checkbox.checked = true
+        }
+    })
+
     tasksElements = document.querySelectorAll(".task");
     let deadlines = document.querySelectorAll(".deadline-field");
 
@@ -186,7 +197,7 @@ function saveTask()
 
     let contentToSave = editField.value;
     let currentContent = tasks[selectedTaskID];
-   
+
     currentContent.taskContent = contentToSave;
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
@@ -247,10 +258,33 @@ function editTitle()
     editTitleButton.addEventListener("click", saveTitle);
 }
 
+function taskDone(e, index, button) {
+    if(e != null)
+    {
+        e.stopPropagation();
+    }
+    
+    tasks = JSON.parse(window.localStorage.getItem("tasks"));
+    console.log(button)
+    if(button.checked)
+    {
+        tasks[index].isDone = true;
+    }
+    else if(!button.checked)
+    {
+        tasks[index].isDone = false;
+    }
+    
+    console.log(button.checked)
+    console.table(tasks)
+    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 function addEventToGeneratedButtons()
 {
     let editTaskButtons = document.querySelectorAll(".edit-task-btn");
     let deleteTaskButtons = document.querySelectorAll(".delete-task-button");
+    let doneCheckbox = document.querySelectorAll(".done-checkbox");
 
     editTaskButtons.forEach((button, index) => {
         button.addEventListener("click", (e) => { 
@@ -262,6 +296,12 @@ function addEventToGeneratedButtons()
     deleteTaskButtons.forEach((button, index) => {
         button.addEventListener("click", (e) => {
             deleteTask(e, index);
+        });
+    });
+
+    doneCheckbox.forEach((button, index) => {
+        button.addEventListener("click", (e) => {
+            taskDone(e, index, button);
         });
     });
 
