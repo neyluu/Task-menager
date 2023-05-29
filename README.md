@@ -1,5 +1,5 @@
 # Task-menager
-Task Menager is a app to manage your task or duties.
+Task Menager is a app to manage your task or duties. You can try it [here](https://neyluu.github.io/Task-menager/)
 
 ![tm_rm5](https://github.com/neyluu/Task-menager/assets/75064225/e3308c76-b9e9-49ff-a0df-6462e525a36a)
 
