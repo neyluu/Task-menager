@@ -224,7 +224,7 @@ input.done-checkbox {
     cursor: pointer;    
     
     background-color: none;
-    background-image: url("/svg/checkmark_sign.svg");
+    background-image: url("../svg/checkmark_sign.svg");
     background-repeat: no-repeat;
     background-size: 75%;
     background-position: center;
