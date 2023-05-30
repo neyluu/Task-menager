@@ -232,7 +232,6 @@ function saveTitle()
 
 function editTask(e, index)
 {
-    console.log("editing")
     if(e != null)
     {
         e.stopPropagation();
@@ -317,7 +316,6 @@ function manageContent()
     let mode = this.dataset.mode;
     // if mode = edit => edit()
     // if mode = save => save()
-    console.log(mode)
     if(isTaskSelected)
         if(mode === "edit")
         {
