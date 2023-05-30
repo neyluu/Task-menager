@@ -71,3 +71,15 @@
         width: 70%;
     }
 }
+
+@media screen and (max-width: 410px)
+{
+    .alert-btn {
+        width: 6rem;
+        height: 3rem;
+    }
+    
+    .btns-visible {
+        gap: .5rem;
+    }
+}
